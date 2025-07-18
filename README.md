@@ -55,9 +55,6 @@ Este projeto utiliza Docker para facilitar a execução do ambiente.
 - Envio de e-mail de confirmação ao cliente com os detalhes do pedido.
 - Tratamento de falhas no envio de e-mail sem interrupção do fluxo.
 
-#### **Banco de Dados**
-- Script SQL para inicialização do banco de dados (`20250717120000_init.sql`).
-
 ---
 
 ### **4. Tecnologias Utilizadas**
