@@ -1,19 +1,18 @@
-# syntax=docker/dockerfile:1
+FROM php:7.4-apache
 
-FROM composer:lts as deps
+# Instala extensões necessárias
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    && docker-php-ext-install mysqli pdo_mysql
 
-WORKDIR /app
+# Cria a pasta de sessões e configura permissões
+RUN mkdir -p /var/www/html/sessions && chmod 755 /var/www/html/sessions
 
-RUN --mount=type=bind,source=composer.json,target=composer.json \
-    --mount=type=bind,source=,target=composer.lock \
-    --mount=type=cache,target=/tmp/cache \
-    composer install --no-dev --no-interaction
-
-FROM php:7.4-apache as final
-
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-
-COPY --from=deps app/vendor/ /var/www/html/vendor
-COPY . /var/www/html
-
-USER www-data
+# Habilita o módulo rewrite do Apache
+RUN a2enmod rewrite
