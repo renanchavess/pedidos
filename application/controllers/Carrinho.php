@@ -6,16 +6,27 @@ class Carrinho extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
-        $this->load->helper('url');
+        $this->load->library('form_validation');
+        $this->load->helper(['url', 'form']);
         $this->load->model('Produto_model');
+        $this->load->model('Cupom_model');
     }
 
     public function index() {
         $carrinho = $this->session->userdata('carrinho') ?: [];
         $frete = $this->calcular_frete($carrinho);
 
+        $this->load->model('Cupom_model');
+        $cupons_validos = $this->Cupom_model->get_validos();
+
+        $data['cliente_nome'] = $this->session->flashdata('cliente_nome') ?: '';
+        $data['cliente_email'] = $this->session->flashdata('cliente_email') ?: '';
+        $data['cep'] = $this->session->flashdata('cep') ?: '';
+        $data['cupom_selecionado'] = $this->session->flashdata('cupom') ?: '';
+
         $data['carrinho'] = $carrinho;
         $data['frete'] = $frete;
+        $data['cupons'] = $cupons_validos;
         $data['content'] = 'carrinho_view';
         $data['title'] = 'Carrinho';
         $this->load->view('template', $data);
@@ -75,6 +86,26 @@ class Carrinho extends CI_Controller {
             return 0.00;
         } else {
             return 20.00;
+        }
+    }
+
+    public function checkout() {
+        $cupom_codigo = $this->input->post('cupom');
+        $cliente_nome = $this->input->post('cliente_nome');
+        $cliente_email = $this->input->post('cliente_email');
+        $cep = $this->input->post('cep');
+
+        $this->load->model('Cupom_model');
+        $cupom = $this->Cupom_model->get_by_codigo($cupom_codigo);
+
+        if (!$cupom || strtotime($cupom['validade']) < time()) {
+            $this->session->set_flashdata('cliente_nome', $cliente_nome);
+            $this->session->set_flashdata('cliente_email', $cliente_email);
+            $this->session->set_flashdata('cep', $cep);
+            $this->session->set_flashdata('cupom', $cupom_codigo);
+
+            $this->session->set_flashdata('error', 'Cupom inválido ou expirado.');
+            redirect('carrinho');
         }
     }
 }

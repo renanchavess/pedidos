@@ -11,7 +11,7 @@ class Produto_model extends CI_Model {
     public function get_all() {
         $this->db->select('produtos.id, produtos.nome, produtos.preco, GROUP_CONCAT(estoque.variacao SEPARATOR ", ") AS variacoes, SUM(estoque.quantidade) AS quantidade');
         $this->db->join('estoque', 'estoque.produto_id = produtos.id', 'left');
-        $this->db->group_by('produtos.id'); // Agrupa por ID do produto
+        $this->db->group_by('produtos.id');
         return $this->db->get('produtos')->result_array();
     }
 
@@ -20,7 +20,9 @@ class Produto_model extends CI_Model {
     }
 
     public function get_estoque($produto_id) {
-        return $this->db->get_where('estoque', array('produto_id' => $produto_id))->result_array();
+        $this->db->select('id, variacao, quantidade');
+        $this->db->where('produto_id', $produto_id);
+        return $this->db->get('estoque')->result_array();
     }
 
     public function insert($dados) {
@@ -46,5 +48,10 @@ class Produto_model extends CI_Model {
         $this->db->where('id', $variacao_id);
         $query = $this->db->get('estoque');
         return $query->num_rows() > 0;
+    }
+
+    public function delete_estoque($id) {
+        $this->db->where('id', $id);
+        $this->db->delete('estoque');
     }
 }

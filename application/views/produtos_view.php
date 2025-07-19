@@ -24,8 +24,7 @@
                         <td><?= $produto["variacoes"] ?: "N/A" ?></td>
                         <td><?= $produto["quantidade"] ?></td>
                         <td>
-                            <a href="<?= site_url("produtos/editar/" . $produto["id"]) ?>" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="<?= site_url("carrinho/adicionar/" . $produto["id"]) ?>" class="btn btn-primary btn-sm">Comprar</a>
+                            <a href="<?= site_url("produtos/editar/" . $produto["id"]) ?>" class="btn btn-warning btn-sm">Gerenciar</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

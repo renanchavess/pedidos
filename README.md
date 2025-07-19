@@ -38,30 +38,40 @@ Este projeto utiliza Docker para facilitar a execução do ambiente.
 
 ---
 
-### **3. Funcionalidades Concluídas**
-#### **Produtos**
-- Listagem de produtos agrupados por nome, com soma de quantidades e variações concatenadas.
-- Tela de edição de produto dividida em duas colunas:
-  - **Esquerda**: Formulário para editar o produto.
-  - **Direita**: Formulário para adicionar ao carrinho.
-
-#### **Carrinho**
-- Adicionar produtos ao carrinho com variações específicas.
-- Máscara de validação para o campo CEP.
-- Validação de e-mail e nome no formulário de checkout.
-
-#### **Pedidos**
-- Finalização de pedidos com cálculo de subtotal, frete e total.
-- Envio de e-mail de confirmação ao cliente com os detalhes do pedido.
-- Tratamento de falhas no envio de e-mail sem interrupção do fluxo.
-
----
-
-### **4. Tecnologias Utilizadas**
+### **3. Tecnologias Utilizadas**
 - **Backend**: CodeIgniter 3 com PHP 7.4
 - **Banco de Dados**: MySQL
 - **Frontend**: Bootstrap e Javascript
 - **Containerização**: Docker
+
+---
+
+## **4. API - Alterar Status do Pedido**
+
+### **Endpoint**
+- **URL**: `http://localhost:8080/pedidos/webhook`
+- **Método**: `POST`
+
+### **Descrição**
+Este endpoint permite alterar o status de um pedido ou removê-lo, dependendo do status enviado.
+
+### **Parâmetros**
+- **`id`**: ID do pedido (obrigatório).
+- **`status`**: Novo status do pedido (obrigatório). Os valores permitidos são:
+  - `pago`: Atualiza o status do pedido para "pago".
+  - `cancelado`: Remove o pedido.
+
+### **Exemplo de Requisição**
+
+#### **Com `curl`**
+```bash
+curl -X POST http://localhost:8080/pedidos/webhook \
+     -H "Content-Type: application/json" \
+     -d '{
+           "id": 1,
+           "status": "pago"
+         }'
+```
 
 ---
 

@@ -8,18 +8,24 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="<?= site_url('produtos') ?>">Minha Loja</a>
+        <div class="container-fluid">
+            <a class="navbar-brand" href="<?= site_url('produtos') ?>">Sistema de Pedidos</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= site_url('produtos') ?>">Lista de Produtos</a>
+                        <a class="nav-link" href="<?= site_url('produtos') ?>">Produtos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= site_url('carrinho') ?>">Carrinho</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('pedidos') ?>">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('cupons') ?>">Cupons</a>
                     </li>
                 </ul>
             </div>
